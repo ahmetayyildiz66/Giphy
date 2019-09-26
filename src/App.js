@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import axios  from 'axios';
+
+import Gifs from "./Gifs/Gifs";
+
+
+class App extends Component {
+
+  state = {
+    gifs: []
+  };
+
+  defaultSize = 20;
+  url = 'https://api.giphy.com/v1/gifs/trending?api_key=JESzJ2z16TUhG1RQOVTs1h21nztW6Pqy&limit='+this.defaultSize+'&rating=G';
+
+  componentDidMount(){
+    axios.get(this.url)
+      .then(res => {
+        this.setState({gifs: res.data.data})
+        console.log('gifs: ',this.state.gifs)
+      })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Gifs gifs={this.state.gifs}/>
+      </div>
+    );
+  }
 }
 
 export default App;
