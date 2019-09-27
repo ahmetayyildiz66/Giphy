@@ -1,0 +1,12 @@
+.wrapper{
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+
+.gif{
+    width: 20%;
+    height: 220px;
+    padding: 1em;
+    border: 1px solid #ccc;
+    margin: 1em;
+}
