@@ -6,7 +6,6 @@ const gifs = props => {
     <div>
       {
           props.gifs.map((gif,index) => {
-              console.log('In gif: ', gif)
               return <Gif prop={gif} key={index}/>
           })
       }
