@@ -23,12 +23,9 @@ class Gif extends Component {
   // }
 
   render() {
+    const { prop } = this.props;
     return (
-        <img
-          className="gif"
-          src={this.props.prop.images.fixed_width.url}
-          alt={this.props.prop.title}
-        />
+      <img className="gif" src={prop.images.fixed_width.url} alt={prop.title} />
     );
   }
 }

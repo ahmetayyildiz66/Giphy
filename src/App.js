@@ -5,27 +5,36 @@ import axios from "axios";
 
 import Gifs from "./Gifs/Gifs";
 import Search from './Search/Search';
-import { Singleton } from "./Singleton";
+import { baseUrl, searchType, apiKey, parameters} from './const/endpoints'
 
 class App extends Component {
+
   state = {
     gifs: [],
-    isSearching: false
+    isSearching: false,
+    size: parameters.size
   };
 
   callbackFunction = (childData) => {
     this.setState({isSearching: childData})
   }
 
-  url = Singleton.url + Singleton.defaultSize + Singleton.rating;
+  //https://api.giphy.com/v1/gifs/trending?api_key=JESzJ2z16TUhG1RQOVTs1h21nztW6Pqy&limit=20&rating=G
+
+  url = baseUrl + searchType.trending + apiKey + parameters.limit + this.state.size + parameters.rating;
 
   fetchMoreData() {
-    Singleton.defaultSize += 20;
-    this.url = Singleton.url + Singleton.defaultSize + Singleton.rating;
-    
-    axios.get(this.url).then(res => {
+    const limit = this.state.size + 20;
+    const url = baseUrl + searchType.trending + apiKey + parameters.limit + limit + parameters.rating;
+
+    this.setState({ size: limit })
+    console.log('urll: '+ url);
+  
+
+    axios.get(url).then(res => {
       this.setState({ gifs: res.data.data });
     });
+    
   }
 
   onScroll = () => {
@@ -35,25 +44,28 @@ class App extends Component {
   };
 
   componentDidMount() {
-    
+    console.log('component mount : '+ this.url);
     //First 20 gifs
     axios.get(this.url).then(res => {
       this.setState({ gifs: res.data.data });
     });
 
-
     //Event listener
     window.addEventListener("scroll", this.onScroll);
   }
 
+  componentDidUpdate(){
+    console.log('component update: '+ this.url);
+  }
+
   render() {
     console.log('Re render: ' + this.state.isSearching);
+    const {gifs,isSearching } = this.state;
     return (
       <div className="App">
         <Search parentCallback = { this.callbackFunction }/>
         {
-          !this.state.isSearching ? 
-          <Gifs gifs={this.state.gifs} /> : null
+          !isSearching && <Gifs gifs={gifs} />
         }
       </div>
     );
