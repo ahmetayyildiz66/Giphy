@@ -3,14 +3,17 @@ import "./Search.css";
 import Gif from "../Gifs/Gif/Gif";
 import axios from "axios";
 
-//  url = baseUrl + searchType.trending + apiKey + parameters.limit + parameters.rating;
-
-import { baseUrl, searchType, apiKey, parameters } from '../const/endpoints'
+import { baseUrl, searchType, apiKey, parameters } from "../const/endpoints";
 
 class Search extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: "", gifsResult: [], searchClicked: false, size: 40 };
+    this.state = {
+      value: "",
+      gifsResult: [],
+      searchClicked: false,
+      size: parameters.size
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,21 +24,34 @@ class Search extends Component {
     this.setState({ value: event.target.value });
   }
 
-
   fetchMore() {
-    this.setState({ size: this.state.size + 20})
-    //const url = Singleton.searchUrl + this.state.value + Singleton.limit + this.state.size;
-    
-    // axios.get(url).then(res => {
-    //     this.setState({ gifsResult: res.data.data})
-    // })
+    const limit = this.state.size + parameters.size;
+    const url =
+      baseUrl +
+      searchType.search +
+      apiKey +
+      parameters.query +
+      this.state.value +
+      parameters.limit +
+      limit;
+
+    this.setState({ size: limit });
+
+    axios.get(url).then(res => {
+      this.setState({ gifsResult: res.data.data });
+    });
   }
 
-
-  //https://api.giphy.com/v1/gifs/search?api_key=JESzJ2z16TUhG1RQOVTs1h21nztW6Pqy&q=burger&limit=20
   fetchGif() {
-    const url = baseUrl + searchType.trending + apiKey + parameters.query + this.state.value + parameters.limit + parameters.size;
-    
+    const url =
+      baseUrl +
+      searchType.search +
+      apiKey +
+      parameters.query +
+      this.state.value +
+      parameters.limit +
+      parameters.size;
+
     axios.get(url).then(res => {
       this.setState({ gifsResult: res.data.data });
     });
@@ -54,6 +70,7 @@ class Search extends Component {
   }
 
   render() {
+    const { value } = this.state;
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -62,7 +79,7 @@ class Search extends Component {
               <input
                 type="text"
                 onChange={this.handleChange}
-                value={this.state.value}
+                value={value}
                 placeholder="Search gif"
               />
               <button type="submit">
@@ -76,11 +93,11 @@ class Search extends Component {
             </div>
           </div>
         </form>
-        {this.state.searchClicked ? (
+        {this.state.searchClicked && (
           <div className="showMore">
             <button onClick={this.fetchMore}>Show More</button>
           </div>
-        ) : null}
+        )}
       </div>
     );
   }

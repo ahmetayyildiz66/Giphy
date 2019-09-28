@@ -19,17 +19,13 @@ class App extends Component {
     this.setState({isSearching: childData})
   }
 
-  //https://api.giphy.com/v1/gifs/trending?api_key=JESzJ2z16TUhG1RQOVTs1h21nztW6Pqy&limit=20&rating=G
-
   url = baseUrl + searchType.trending + apiKey + parameters.limit + this.state.size + parameters.rating;
 
   fetchMoreData() {
     const limit = this.state.size + 20;
     const url = baseUrl + searchType.trending + apiKey + parameters.limit + limit + parameters.rating;
 
-    this.setState({ size: limit })
-    console.log('urll: '+ url);
-  
+    this.setState({ size: limit })  
 
     axios.get(url).then(res => {
       this.setState({ gifs: res.data.data });
@@ -44,7 +40,6 @@ class App extends Component {
   };
 
   componentDidMount() {
-    console.log('component mount : '+ this.url);
     //First 20 gifs
     axios.get(this.url).then(res => {
       this.setState({ gifs: res.data.data });
@@ -54,9 +49,6 @@ class App extends Component {
     window.addEventListener("scroll", this.onScroll);
   }
 
-  componentDidUpdate(){
-    console.log('component update: '+ this.url);
-  }
 
   render() {
     console.log('Re render: ' + this.state.isSearching);
