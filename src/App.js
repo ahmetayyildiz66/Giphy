@@ -4,13 +4,18 @@ import "./App.css";
 import axios from "axios";
 
 import Gifs from "./Gifs/Gifs";
-import "./Singleton";
+import Search from './Search/Search';
 import { Singleton } from "./Singleton";
 
 class App extends Component {
   state = {
-    gifs: []
+    gifs: [],
+    isSearching: false
   };
+
+  callbackFunction = (childData) => {
+    this.setState({isSearching: childData})
+  }
 
   url = Singleton.url + Singleton.defaultSize + Singleton.rating;
 
@@ -36,14 +41,20 @@ class App extends Component {
       this.setState({ gifs: res.data.data });
     });
 
+
     //Event listener
     window.addEventListener("scroll", this.onScroll);
   }
 
   render() {
+    console.log('Re render: ' + this.state.isSearching);
     return (
       <div className="App">
-        <Gifs gifs={this.state.gifs} />
+        <Search parentCallback = { this.callbackFunction }/>
+        {
+          !this.state.isSearching ? 
+          <Gifs gifs={this.state.gifs} /> : null
+        }
       </div>
     );
   }

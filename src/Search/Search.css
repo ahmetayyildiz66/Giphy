@@ -1,0 +1,54 @@
+input[type=text]{
+
+    width: 50%;
+    border: 2px solid #aaa;
+    border-radius: 4px;
+    margin: 8px 0;
+    outline: none;
+    padding: 8px;
+    box-sizing: border-box;
+    transition: .3s;
+}
+
+input[type=text]:focus{
+    border-color: dodgerblue;
+    box-shadow: 0 0 8px 0 dodgerblue;
+}
+
+.inputWithIcon{
+    position: relative;
+    top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button{
+    position: absolute;
+    cursor: pointer;
+    border: none;
+    right: 382px;
+    width: 80px;
+    height: 30px;
+}
+
+
+
+button:hover{
+    background-color: dodgerblue;
+}
+
+.inputWithIcon i{
+    left: 10px;
+    top: 9px;
+    padding: 0px 0px;
+    color: #aaa;
+    transition: .3s;
+}
+
+
+.inputWithIcon input[type="text"]:focus + i{
+    color: dodgerblue;
+}
+
